@@ -35,10 +35,10 @@ class Auth_Handler extends Handler {
 
     protected function auth_page() {
         $provider = $this->get_config('oauth_provider');
+        /* @var $provider \League\OAuth2\Client\Provider\GenericProvider */
 
         // First time on this page - no code passed from QB API
         if (!isset($_GET['code'])) {
-            /* @var $provider \League\OAuth2\Client\Provider\GenericProvider */
             $redirectUrl = $provider->getAuthorizationUrl();
             $_SESSION['oauth2state'] = $provider->getState();
             header(vsprintf('Location: %1$s', [$redirectUrl]));
