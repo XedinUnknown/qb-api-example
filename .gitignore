@@ -1,3 +1,4 @@
 /vendor/
 /.idea/workspace.xml
 /access_token
+/refresh_token
