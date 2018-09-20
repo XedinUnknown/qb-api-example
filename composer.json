@@ -13,5 +13,9 @@
         "php": "^7.0",
         "league/oauth2-client": "^2.3",
         "quickbooks/v3-php-sdk": "^5.0"
+    },
+
+    "autoload": {
+        "classmap": ["src/"]
     }
 }
