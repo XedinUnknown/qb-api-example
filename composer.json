@@ -1,0 +1,17 @@
+{
+    "name": "xedinunknown/qb-api-example",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Anton Ukhanev",
+            "email": "xedin.unknown@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7.0",
+        "league/oauth2-client": "^2.3",
+        "quickbooks/v3-php-sdk": "^5.0"
+    }
+}
