@@ -9,6 +9,7 @@ return function ($rootPath) {
         'base_dir' => $rootPath,
         'base_url' => 'http://wpra-php-70.local/qb',
         'access_token_file_name' => 'access_token',
+        'refresh_token_file_name' => 'refresh_token',
 
         'client_id' => '',
         'client_secret' => '',

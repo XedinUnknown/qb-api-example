@@ -55,8 +55,10 @@ class Auth_Handler extends Handler {
         $accessToken = $provider->getAccessToken('authorization_code', [
             'code' => $_GET['code']
         ]);
+        $refreshToken = $accessToken->getRefreshToken();
 
         $this->save_token($accessToken);
+        $this->save_refresh_token($refreshToken);
         header(vsprintf('Location: %1$s', [$this->get_url()]));
 
         return;
@@ -82,6 +84,25 @@ class Auth_Handler extends Handler {
     protected function get_token_file_path() {
         $rootPath = rtrim($this->get_config('base_dir'), '/');
         $tokenFile = ltrim($this->get_config('access_token_file_name'), '/' );
+        $tokenFilePath = "$rootPath/$tokenFile";
+
+        return $tokenFilePath;
+    }
+
+    protected function save_refresh_token($token) {
+        file_put_contents($this->get_refresh_token_file_path(), $token);
+    }
+
+    public function get_refresh_token() {
+        return file_get_contents($this->get_refresh_token_file_path());
+    }
+
+    /**
+     * @return string The path to the token file.
+     */
+    protected function get_refresh_token_file_path() {
+        $rootPath = rtrim($this->get_config('base_dir'), '/');
+        $tokenFile = ltrim($this->get_config('refresh_token_file_name'), '/' );
         $tokenFilePath = "$rootPath/$tokenFile";
 
         return $tokenFilePath;
