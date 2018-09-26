@@ -78,7 +78,7 @@ class Auth_Handler extends Handler {
      *
      * @param AccessToken $token Token to save
      */
-    protected function save_token(AccessToken $token) {
+    public function save_token(AccessToken $token) {
         file_put_contents($this->get_token_file_path(), json_encode($token->jsonSerialize()));
     }
 
