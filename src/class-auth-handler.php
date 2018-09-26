@@ -89,7 +89,7 @@ class Auth_Handler extends Handler {
         return $tokenFilePath;
     }
 
-    protected function save_refresh_token($token) {
+    public function save_refresh_token($token) {
         file_put_contents($this->get_refresh_token_file_path(), $token);
     }
 
