@@ -7,6 +7,8 @@
 
 namespace XedinUnknown\QbApiExample;
 
+use League\OAuth2\Client\Token\AccessToken;
+
 /**
  * Handles authentication.
  *
@@ -55,27 +57,29 @@ class Auth_Handler extends Handler {
         $accessToken = $provider->getAccessToken('authorization_code', [
             'code' => $_GET['code']
         ]);
-        $refreshToken = $accessToken->getRefreshToken();
 
         $this->save_token($accessToken);
-        $this->save_refresh_token($refreshToken);
         header(vsprintf('Location: %1$s', [$this->get_url()]));
 
         return;
     }
 
-
+    /**
+     * @return AccessToken
+     */
     public function get_token() {
-        return file_get_contents($this->get_token_file_path());
+        $tokenData = (array) json_decode(file_get_contents($this->get_token_file_path()));
+
+        return new AccessToken($tokenData);
     }
 
     /**
      * Saves token.
      *
-     * @param string $token Token to save
+     * @param AccessToken $token Token to save
      */
-    protected function save_token($token) {
-        file_put_contents($this->get_token_file_path(), $token);
+    protected function save_token(AccessToken $token) {
+        file_put_contents($this->get_token_file_path(), json_encode($token->jsonSerialize()));
     }
 
     /**
@@ -84,25 +88,6 @@ class Auth_Handler extends Handler {
     protected function get_token_file_path() {
         $rootPath = rtrim($this->get_config('base_dir'), '/');
         $tokenFile = ltrim($this->get_config('access_token_file_name'), '/' );
-        $tokenFilePath = "$rootPath/$tokenFile";
-
-        return $tokenFilePath;
-    }
-
-    public function save_refresh_token($token) {
-        file_put_contents($this->get_refresh_token_file_path(), $token);
-    }
-
-    public function get_refresh_token() {
-        return file_get_contents($this->get_refresh_token_file_path());
-    }
-
-    /**
-     * @return string The path to the token file.
-     */
-    protected function get_refresh_token_file_path() {
-        $rootPath = rtrim($this->get_config('base_dir'), '/');
-        $tokenFile = ltrim($this->get_config('refresh_token_file_name'), '/' );
         $tokenFilePath = "$rootPath/$tokenFile";
 
         return $tokenFilePath;

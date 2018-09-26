@@ -43,12 +43,14 @@ return function ($rootPath) {
             $handler =  $c->get('auth_handler');
             /* @var $handler Auth_Handler */
 
+            $token = $handler->get_token();
+
             $service = DataService::Configure(array(
                 'auth_mode' => 'oauth2',
                 'ClientID' => $c->get('client_id'),
                 'ClientSecret' => $c->get('client_secret'),
-                'accessTokenKey' =>  $handler->get_token(),
-                'refreshTokenKey' => $handler->get_refresh_token(),
+                'accessTokenKey' =>  $token->getToken(),
+                'refreshTokenKey' => $token->getRefreshToken(),
                 'QBORealmID' => '123146096244749',
                 'baseUrl' => 'https://sandbox-quickbooks.api.intuit.com'
             ));
