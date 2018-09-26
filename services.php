@@ -45,6 +45,18 @@ return function ($rootPath) {
 
             $token = $handler->get_token();
 
+            // Handling token expiration
+            if ($token->hasExpired()) {
+                $provider = $c->get('oauth_provider');
+                /* @var $provider GenericProvider */
+
+                $newAccessToken = $provider->getAccessToken('refresh_token', [
+                    'refresh_token' => $token->getRefreshToken(),
+                ]);
+
+                $handler->save_token($newAccessToken);
+            }
+
             $service = DataService::Configure(array(
                 'auth_mode' => 'oauth2',
                 'ClientID' => $c->get('client_id'),
